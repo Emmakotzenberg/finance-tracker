@@ -55,7 +55,8 @@ Start the server as above.
 
 To add transactions via CLI (without server running):
 
-go run main.go add "AMOUNT$ DESCRIPTION DATE"
+-go run main.go add "AMOUNT$ DESCRIPTION DATE"
 
 To remove transactions via CLI (without server running):
-go run main.go remove "ID FROM DASHBOARD TABLE
+
+-go run main.go remove "ID FROM DASHBOARD TABLE
