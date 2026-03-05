@@ -4,6 +4,7 @@ import (
     "database/sql"
     "net/http"
     "time"
+    "sort"
 
     "github.com/gin-gonic/gin"
     _ "github.com/mattn/go-sqlite3"
@@ -15,6 +16,12 @@ type Transaction struct {
     Category    string    `json:"category"`
     Date        time.Time `json:"date"`
     Description string    `json:"description"`
+}
+
+type MonthlySummary struct {
+    Month        string        `json:"month"`
+    Transactions []Transaction `json:"transactions"`
+    Total        float64       `json:"total"`
 }
 
 var db *sql.DB
@@ -43,6 +50,7 @@ func main() {
     r.POST("/transactions", addTransaction)
     r.GET("/transactions", listTransactions)
     r.GET("/summary", summary)
+    r.GET("/monthly-summary", getMonthlySummary)
     r.Run(":8080")
 }
 
@@ -93,4 +101,46 @@ func summary(c *gin.Context) {
         return
     }
     c.JSON(http.StatusOK, gin.H{"total_spent": total})
+}
+
+func getMonthlySummary(c *gin.Context) {
+    rows, err := db.Query("SELECT * FROM transactions ORDER BY date DESC")
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    defer rows.Close()
+
+    monthly := make(map[string][]Transaction)
+    totals := make(map[string]float64)
+
+    for rows.Next() {
+        var tx Transaction
+        var dateStr string
+        if err := rows.Scan(&tx.ID, &tx.Amount, &tx.Category, &dateStr, &tx.Description); err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+            return
+        }
+        tx.Date, _ = time.Parse(time.RFC3339, dateStr)
+
+        monthKey := tx.Date.Format("2006-01")           // e.g. "2026-03"
+        monthly[monthKey] = append(monthly[monthKey], tx)
+        totals[monthKey] += tx.Amount
+    }
+
+    var summaries []MonthlySummary
+    for month, txs := range monthly {
+        summaries = append(summaries, MonthlySummary{
+            Month:        month,
+            Transactions: txs,
+            Total:        totals[month],
+        })
+    }
+
+    // Show newest month first
+    sort.Slice(summaries, func(i, j int) bool {
+        return summaries[i].Month > summaries[j].Month
+    })
+
+    c.JSON(http.StatusOK, summaries)
 }
