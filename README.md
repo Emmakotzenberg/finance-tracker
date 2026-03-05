@@ -43,7 +43,7 @@ go run main.go
 
 2.Access the dashboard at http://localhost:8080/ to view your monthly transaction table.
 
-3.Use CLI commands to add data (see below).
+3.Use CLI commands to add and remove data (see below).
 
 4.Stop with Ctrl + C.
 
@@ -57,4 +57,5 @@ To add transactions via CLI (without server running):
 
 go run main.go add "AMOUNT$ DESCRIPTION DATE"
 
-
+To remove transactions via CLI (without server running):
+go run main.go remove "ID FROM DASHBOARD TABLE

@@ -55,6 +55,10 @@ func main() {
         return
     }
 
+    if len(os.Args) > 1 && strings.ToLower(os.Args[1]) == "remove" {
+        handleRemoveCLI()
+        return
+    }
     r := gin.Default()
     r.POST("/transactions", addTransaction)
     r.GET("/transactions", listTransactions)
@@ -206,4 +210,33 @@ func handleCLI() {
 
     fmt.Printf("✅ Added! %.2f | %s | %s | %s\n",
         amount, category, description, txDate.Format("2006-01-02"))
+}
+
+func handleRemoveCLI() {
+    if len(os.Args) < 3 {
+        fmt.Println("Usage: go run main.go remove ID")
+        fmt.Println("       (ID is the transaction number from the list)")
+        os.Exit(1)
+    }
+
+    idStr := os.Args[2]
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        fmt.Println("❌ Invalid ID: Must be a number.")
+        return
+    }
+
+    // Delete from database
+    result, err := db.Exec("DELETE FROM transactions WHERE id = ?", id)
+    if err != nil {
+        fmt.Println("❌ Error deleting:", err)
+        return
+    }
+
+    rowsAffected, _ := result.RowsAffected()
+    if rowsAffected == 0 {
+        fmt.Println("❌ No transaction found with ID:", id)
+    } else {
+        fmt.Printf("✅ Deleted transaction ID: %d\n", id)
+    }
 }
