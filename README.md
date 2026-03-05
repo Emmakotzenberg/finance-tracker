@@ -47,7 +47,7 @@ go run main.go
 
 4.Stop with Ctrl + C.
 
-##Locally
+## Locally
 
 The project runs entirely locally with SQLite—no external database needed.
 
