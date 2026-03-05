@@ -42,6 +42,7 @@ func main() {
     r := gin.Default()
     r.POST("/transactions", addTransaction)
     r.GET("/transactions", listTransactions)
+    r.GET("/summary", summary)
     r.Run(":8080")
 }
 
@@ -81,4 +82,15 @@ func listTransactions(c *gin.Context) {
         transactions = append(transactions, tx)
     }
     c.JSON(http.StatusOK, transactions)
+}
+
+func summary(c *gin.Context) {
+    // Simple total spent
+    var total float64
+    err := db.QueryRow("SELECT SUM(amount) FROM transactions").Scan(&total)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"total_spent": total})
 }
