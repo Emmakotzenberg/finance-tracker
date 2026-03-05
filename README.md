@@ -1,3 +1,4 @@
+
 ## Finance Tracker
 A simple personal finance tracking application built in Go, featuring a REST API, CLI commands, and a basic web dashboard for viewing summaries.
 
@@ -51,12 +52,12 @@ go run main.go
 
 The project runs entirely locally with SQLite—no external database needed.
 
-Start the server as above.
+1.Start the server as above.
 
-To add transactions via CLI (without server running):
+2.To add transactions via CLI (without server running):
 
--go run main.go add "AMOUNT$ DESCRIPTION DATE"
+go run main.go add "AMOUNT$ DESCRIPTION DATE"
 
-To remove transactions via CLI (without server running):
+3.To remove transactions via CLI (without server running):
 
--go run main.go remove "ID FROM DASHBOARD TABLE
+go run main.go remove "ID FROM DASHBOARD TABLE
