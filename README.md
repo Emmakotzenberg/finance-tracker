@@ -6,13 +6,18 @@ As a beginner developer exploring backend tools like Go and databases, I wanted 
 
 ## Goals
 The primary goal of Finance Tracker is to provide an easy way to log and review expenses locally.
- Key objectives include:
+# Key objectives include:
 
 1.Simple Transaction Logging: Add expenses quickly via CLI or API with minimal input.
+
 2.Data Summaries: View totals and breakdowns by month in JSON or a web table.
+
 3.Local Storage: Use SQLite for lightweight, file-based persistence without external services.
+
 4.Web Dashboard: Display data in a clean HTML table for easy visualization.
+
 5.CLI Integration: Enable terminal-based additions for fast, scriptable use.
+
 6.Extensibility: Design for future additions like categories, budgets, or exports.
 
 ## Getting Started
@@ -27,6 +32,7 @@ git clone https://github.com/Emmakotzenberg/finance-tracker.git
 
 2.Navigate to the project:
 cd finance-tracker
+
 3.Install dependencies:
 go mod tidy
 
@@ -36,15 +42,19 @@ Production
 go run main.go
 
 2.Access the dashboard at http://localhost:8080/ to view your monthly transaction table.
+
 3.Use CLI commands to add data (see below).
+
 4.Stop with Ctrl + C.
 
 ##Locally
 
 The project runs entirely locally with SQLite—no external database needed.
+
 Start the server as above.
+
 To add transactions via CLI (without server running):
-go run main.go add "{AMOUNT}$ {DESCRIPTION} {DATE}"
-For API testing, use curl (e.g., curl http://localhost:8080/monthly-summary).
-Database file (tracker.db) is created automatically in the project root.
+
+go run main.go add "AMOUNT$ DESCRIPTION DATE"
+
 
