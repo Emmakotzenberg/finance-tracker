@@ -6,7 +6,7 @@ import (
     "time"
     "sort"
 
-    "github.com/gin-gonic/gin"
+   "github.com/gin-gonic/gin"
     _ "github.com/mattn/go-sqlite3"
 )
 
@@ -51,6 +51,9 @@ func main() {
     r.GET("/transactions", listTransactions)
     r.GET("/summary", summary)
     r.GET("/monthly-summary", getMonthlySummary)
+    r.GET("/", func(c *gin.Context) {
+        c.File("./static/index.html")
+    })
     r.Run(":8080")
 }
 
