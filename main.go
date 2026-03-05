@@ -5,6 +5,10 @@ import (
     "net/http"
     "time"
     "sort"
+    "fmt"
+    "os"
+    "strconv"
+    "strings"
 
    "github.com/gin-gonic/gin"
     _ "github.com/mattn/go-sqlite3"
@@ -34,7 +38,6 @@ func main() {
     }
     defer db.Close()
 
-    // Create table if not exists
     _, err = db.Exec(`CREATE TABLE IF NOT EXISTS transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         amount REAL,
@@ -46,14 +49,22 @@ func main() {
         panic(err)
     }
 
+
+    if len(os.Args) > 1 && strings.ToLower(os.Args[1]) == "add" {
+        handleCLI()
+        return
+    }
+
     r := gin.Default()
     r.POST("/transactions", addTransaction)
     r.GET("/transactions", listTransactions)
     r.GET("/summary", summary)
     r.GET("/monthly-summary", getMonthlySummary)
+
     r.GET("/", func(c *gin.Context) {
         c.File("./static/index.html")
     })
+
     r.Run(":8080")
 }
 
@@ -146,4 +157,53 @@ func getMonthlySummary(c *gin.Context) {
     })
 
     c.JSON(http.StatusOK, summaries)
+}
+
+func handleCLI() {
+    if len(os.Args) != 5 {
+        fmt.Println("Usage: go run main.go add <amount> <description> <date>")
+        fmt.Println(`Example: go run main.go add 50 "Milk & Butter" 2026/01/20`)
+        fmt.Println(`         go run main.go add 50$ groceries "New shoes" 2026-03-10`)
+        return
+    }
+
+    // Parse amount (works with or without $)
+    amountStr := strings.TrimSuffix(os.Args[2], "$")
+    amountStr = strings.TrimSpace(amountStr)
+    amount, err := strconv.ParseFloat(amountStr, 64)
+    if err != nil {
+        fmt.Println("❌ Invalid amount:", os.Args[2])
+        return
+    }
+
+    description := os.Args[3]
+    dateStr := os.Args[4]
+
+    // Try both date formats
+    var txDate time.Time
+    layouts := []string{"2006-01-02", "2006/01/02"}
+    for _, layout := range layouts {
+        t, parseErr := time.Parse(layout, dateStr)
+        if parseErr == nil {
+            txDate = t
+            break
+        }
+    }
+    if txDate.IsZero() {
+        fmt.Println("❌ Invalid date. Use YYYY-MM-DD or YYYY/MM/DD")
+        return
+    }
+
+    category := "uncategorized"
+
+    _, err = db.Exec("INSERT INTO transactions (amount, category, date, description) VALUES (?, ?, ?, ?)",
+        amount, category, txDate.Format(time.RFC3339), description)
+
+    if err != nil {
+        fmt.Println("❌ Error saving:", err)
+        return
+    }
+
+    fmt.Printf("✅ Added! %.2f | %s | %s | %s\n",
+        amount, category, description, txDate.Format("2006-01-02"))
 }
