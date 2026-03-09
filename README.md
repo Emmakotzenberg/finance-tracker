@@ -1,18 +1,18 @@
-## Finance Tracker
+# Finance Tracker
 
 A simple personal finance tracking tool built in Go.
 It allows users to add, remove, and view transactions via a web dashboard or CLI, using a local SQLite database.
 
-## Motivation
+# Motivation
 
 This project was created to provide an easy, privacy-focused way to track monthly transactions without relying on cloud services or external databases.
 It's ideal for individuals who want a lightweight tool to monitor expenses, income, and financial patterns directly on their local machine.
 
 ## Quick Start
-# Prerequisites
+## Prerequisites
 Go 1.18+ installed
 
-# Installation
+## Installation
 1.Clone the repo
 git clone https://github.com/Emmakotzenberg/finance-tracker.git
 
@@ -22,7 +22,7 @@ git clone https://github.com/Emmakotzenberg/finance-tracker.git
 3.Install dependencies
 "go mod tidy"
 
-## Running the Server
+# Running the Server
 1.After installation, run the server:
 "go run main.go"
 
@@ -32,20 +32,20 @@ git clone https://github.com/Emmakotzenberg/finance-tracker.git
 
 4.Stop the server with Ctrl + C.
 
-## Usage
-# Adding Transactions via CLI
+# Usage
+## Adding Transactions via CLI
 "go run main.go add "AMOUNT$ DESCRIPTION DATE"
 
 -Replace AMOUNT$ with your transaction amount
 -DESCRIPTION is a brief note of the transaction
 -DATE should be YYYY-MM-DD format
 
-# Removing Transactions via CLI 
+## Removing Transactions via CLI 
 "go run main.go remove "ID"
 
 -Replace ID with transaction ID visible in web dashboard
 
-## Contributing
+# Contributing
 
 Contributions are welcome! To get started:
 
