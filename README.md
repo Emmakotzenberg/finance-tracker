@@ -8,7 +8,7 @@ It allows users to add, remove, and view transactions via a web dashboard or CLI
 This project was created to provide an easy, privacy-focused way to track monthly transactions without relying on cloud services or external databases.
 It's ideal for individuals who want a lightweight tool to monitor expenses, income, and financial patterns directly on their local machine.
 
-## Quick Start
+# Quick Start
 ## Prerequisites
 Go 1.18+ installed
 
