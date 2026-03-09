@@ -1,63 +1,64 @@
-
 ## Finance Tracker
-A simple personal finance tracking application built in Go, featuring a REST API, CLI commands, and a basic web dashboard for viewing summaries.
+
+A simple personal finance tracking tool built in Go.
+It allows users to add, remove, and view transactions via a web dashboard or CLI, using a local SQLite database.
 
 ## Motivation
-As a beginner developer exploring backend tools like Go and databases, I wanted to build something practical for tracking expenses. This project helps me learn about APIs, databases, concurrency basics, and integrating a simple web interface—all while creating a tool I can use daily to manage my finances without relying on complex apps.
 
-## Goals
-The primary goal of Finance Tracker is to provide an easy way to log and review expenses locally.
-# Key objectives include:
+This project was created to provide an easy, privacy-focused way to track monthly transactions without relying on cloud services or external databases.
+It's ideal for individuals who want a lightweight tool to monitor expenses, income, and financial patterns directly on their local machine.
 
-1.Simple Transaction Logging: Add expenses quickly via CLI or API with minimal input.
+## Quick Start
+# Prerequisites
+Go 1.18+ installed
 
-2.Data Summaries: View totals and breakdowns by month in JSON or a web table.
-
-3.Local Storage: Use SQLite for lightweight, file-based persistence without external services.
-
-4.Web Dashboard: Display data in a clean HTML table for easy visualization.
-
-5.CLI Integration: Enable terminal-based additions for fast, scriptable use.
-
-6.Extensibility: Design for future additions like categories, budgets, or exports.
-
-## Getting Started
-Prerequisites:
-
-*Go 1.18+ installed
-
-## Installation
-
-1.Clone the repo:
+# Installation
+1.Clone the repo
 git clone https://github.com/Emmakotzenberg/finance-tracker.git
 
-2.Navigate to the project:
-cd finance-tracker
+2.Navigate to the project
+"cd finance-tracker"
 
-3.Install dependencies:
-go mod tidy
+3.Install dependencies
+"go mod tidy"
 
-## Running
-Production
+## Running the Server
 1.After installation, run the server:
-go run main.go
+"go run main.go"
 
-2.Access the dashboard at http://localhost:8080/ to view your monthly transaction table.
+2.Access the dashboard at http://localhost:8080/ to view your monthly transactions.
 
-3.Use CLI commands to add and remove data (see below).
+3.Use CLI commands to add and remove data (see Usage section below).
 
-4.Stop with Ctrl + C.
+4.Stop the server with Ctrl + C.
 
-## Locally
+## Usage
+# Adding Transactions via CLI
+"go run main.go add "AMOUNT$ DESCRIPTION DATE"
 
-The project runs entirely locally with SQLite—no external database needed.
+-Replace AMOUNT$ with your transaction amount
+-DESCRIPTION is a brief note of the transaction
+-DATE should be YYYY-MM-DD format
 
-1.Start the server as above.
+# Removing Transactions via CLI 
+"go run main.go remove "ID"
 
-2.To add transactions via CLI (without server running):
+-Replace ID with transaction ID visible in web dashboard
 
-go run main.go add "AMOUNT$ DESCRIPTION DATE"
+## Contributing
 
-3.To remove transactions via CLI (without server running):
+Contributions are welcome! To get started:
 
-go run main.go remove "ID FROM DASHBOARD TABLE
+1.Fork the repository on GitHub.
+ 
+2.Create a new branch for your feature or bug fix: "git checkout -b feature/your-feature-name".
+
+3.Make your changes and commit them with descriptive messages.
+
+4.Push your branch: "git push origin feature/your-feature-name".
+
+5.Open a Pull Request on the original repository.
+
+Please follow the code style in the project, add tests where possible, and ensure your changes don't break existing functionality.
+For major changes, open an issue first to discuss.
+
